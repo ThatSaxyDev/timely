@@ -58,6 +58,7 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
       // Do something with the selected option
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +92,11 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
               width: width(context),
               // margin: EdgeInsets.only(bottom: 10.h),
               decoration: BoxDecoration(
-                // color: Colors.black.withOpacity(0.2),
-                // border: Border.all(
-                //   color: currentTheme.backgroundColor,
-                // ),
-              ),
+                  // color: Colors.black.withOpacity(0.2),
+                  // border: Border.all(
+                  //   color: currentTheme.backgroundColor,
+                  // ),
+                  ),
               child: CarouselSlider(
                 carouselController: _controller,
                 options: CarouselOptions(
@@ -116,7 +117,8 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20.sp,
-                                color: Pallete.whiteColor),
+                                color:
+                                    currentTheme.textTheme.bodyMedium!.color),
                           ),
                           10.sbW,
                           Text(
@@ -124,7 +126,8 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 30.sp,
-                                color: Pallete.whiteColor),
+                                color:
+                                    currentTheme.textTheme.bodyMedium!.color),
                           )
                         ],
                       ),
@@ -150,11 +153,14 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16.sp,
-                                        color: Pallete.whiteColor),
+                                        color: currentTheme
+                                            .textTheme.bodyMedium!.color),
                                   ),
                                   5.sbW,
                                   Icon(Icons.arrow_forward_ios_rounded,
-                                      size: 16.sp, color: Pallete.whiteColor),
+                                      size: 16.sp,
+                                      color: currentTheme
+                                          .textTheme.bodyMedium!.color),
                                   5.sbW,
                                   Text(
                                     DateFormat('h:mm a').format(
@@ -162,7 +168,8 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16.sp,
-                                        color: Pallete.whiteColor),
+                                        color: currentTheme
+                                            .textTheme.bodyMedium!.color),
                                   ),
                                 ],
                               ),
@@ -176,7 +183,8 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16.sp,
-                                        color: Pallete.whiteColor),
+                                        color: currentTheme
+                                            .textTheme.bodyMedium!.color),
                                   ),
                                 ),
                             ],
@@ -185,7 +193,7 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                           //! edit
                           Container(
                             decoration: BoxDecoration(
-                                color: Pallete.whiteColor.withOpacity(0.2),
+                                color: currentTheme.textTheme.bodyMedium!.color!.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(7.r)),
                             child: TextButton.icon(
                               onPressed: () {
@@ -196,12 +204,12 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                               },
                               icon: Icon(
                                 PhosphorIcons.pencil,
-                                color: Pallete.whiteColor,
+                                color: currentTheme.textTheme.bodyMedium!.color,
                               ),
                               label: Text(
                                 'Edit',
                                 style: TextStyle(
-                                  color: Pallete.whiteColor,
+                                  color: currentTheme.textTheme.bodyMedium!.color,
                                 ),
                               ),
                             ),

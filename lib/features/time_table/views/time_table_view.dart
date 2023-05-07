@@ -67,7 +67,7 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
         ],
       ),
       drawer: Drawer(
-        width: 304.w,
+        width: 250.w,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
