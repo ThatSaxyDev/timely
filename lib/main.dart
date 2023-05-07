@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:timely/features/time_table/views/add_new_schedule_view.dart';
 import 'package:timely/features/time_table/views/time_table_view.dart';
 import 'package:timely/theme/palette.dart';
 

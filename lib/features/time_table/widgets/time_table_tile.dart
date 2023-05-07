@@ -20,12 +20,14 @@ import '../views/add_schedule.dart';
 class TimeTableTile extends ConsumerStatefulWidget {
   final ScheduleModel schedule;
   final void Function()? onTap;
-  final Color? color;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
   const TimeTableTile({
     super.key,
     required this.schedule,
     this.onTap,
-    this.color,
+    this.backgroundColor,
+    this.foregroundColor,
   });
 
   @override
@@ -64,9 +66,9 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
       onTap: () {
         _controller.nextPage();
       },
-      onLongPress: () {
-        _showPopupMenu(context);
-      },
+      // onLongPress: () {
+      //   _showPopupMenu(context);
+      // },
       child: SizedBox(
         height: 90.h,
         width: width(context),
@@ -77,10 +79,11 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
               width: width(context),
               // margin: EdgeInsets.only(bottom: 10.h),
               decoration: BoxDecoration(
-                color: getRandomColor(),
-                border: Border.all(
-                  color: currentTheme.backgroundColor,
-                ),
+                // color: getRandomColor(),
+                color: Colors.transparent,
+                // border: Border.all(
+                //   color: currentTheme.backgroundColor,
+                // ),
               ),
             ),
             Container(
@@ -88,10 +91,10 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
               width: width(context),
               // margin: EdgeInsets.only(bottom: 10.h),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.2),
-                border: Border.all(
-                  color: currentTheme.backgroundColor,
-                ),
+                // color: Colors.black.withOpacity(0.2),
+                // border: Border.all(
+                //   color: currentTheme.backgroundColor,
+                // ),
               ),
               child: CarouselSlider(
                 carouselController: _controller,

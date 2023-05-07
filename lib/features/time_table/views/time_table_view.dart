@@ -16,6 +16,7 @@ import 'package:timely/features/utils/app_fade_animation.dart';
 import 'package:timely/features/utils/error_text.dart';
 import 'package:timely/features/utils/loader.dart';
 import 'package:timely/features/utils/nav.dart';
+import 'package:timely/features/utils/string_extensions.dart';
 import 'package:timely/features/utils/utils.dart';
 import 'package:timely/features/utils/widget_extensions.dart';
 import 'package:timely/models/schedule_model.dart';
@@ -34,6 +35,10 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
 
   void toggleTheme(WidgetRef ref) {
     ref.read(themeNotifierProvider.notifier).toggleTheme();
+  }
+
+  void clearTheDatabase({required WidgetRef ref}) {
+    ref.read(timeTableControllerProvider.notifier).clearTheDatabase();
   }
 
   @override
@@ -64,10 +69,37 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
       drawer: Drawer(
         width: 304.w,
         child: Center(
-          child: Switch.adaptive(
-            value: ref.watch(themeNotifierProvider.notifier).mode ==
-                ThemeMode.dark,
-            onChanged: (val) => toggleTheme(ref),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(PhosphorIcons.sun),
+                  10.sbW,
+                  Switch.adaptive(
+                    value: ref.watch(themeNotifierProvider.notifier).mode ==
+                        ThemeMode.dark,
+                    onChanged: (val) => toggleTheme(ref),
+                  ),
+                  10.sbW,
+                  Icon(PhosphorIcons.moon),
+                ],
+              ),
+              200.sbH,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Pallete.redColor,
+                ),
+                onPressed: () => clearTheDatabase(ref: ref),
+                child: Text(
+                  'clear db',
+                  style: TextStyle(
+                    color: Pallete.whiteColor,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -75,7 +107,42 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
         data: (schedules) {
           // log(schedules.length.toString());
           if (schedules.isEmpty) {
-            return const ErrorText(error: 'e no dey');
+            return SizedBox(
+              height: height(context),
+              width: width(context),
+              child: Center(
+                child: Column(
+                  children: [
+                    50.sbH,
+                    Align(
+                      alignment: Alignment(0.8, 0),
+                      child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationZ(-0.5),
+                        child: Image.asset(
+                          'arrow'.png,
+                          height: 150.h,
+                          color: currentTheme.textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                    ).animate().scale(duration: 300.ms, begin: 0, end: 1),
+                    50.sbH,
+                    Icon(
+                      PhosphorIcons.backpackLight,
+                      size: 150.sp,
+                    ),
+                    30.sbH,
+                    Text(
+                      'Welcome to Timely',
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
 
           Map<String, List<ScheduleModel>> scheduleByDay = {};
@@ -166,15 +233,30 @@ class TimeTablePage extends StatelessWidget {
           ),
           child: Column(
             children: [
-              100.sbH,
+              dayList == null || dayList!.isEmpty ? 150.sbH : 100.sbH,
               if (dayList == null || dayList!.isEmpty)
-                Column(
-                  children: [
-                    250.sbH,
-                    Text(
-                      'No activity today',
+                SizedBox(
+                  height: height(context),
+                  width: width(context),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        100.sbH,
+                        Icon(
+                          PhosphorIcons.cactus,
+                          size: 100.sp,
+                        ),
+                        10.sbH,
+                        Text(
+                          'No activities today',
+                          style: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               if (dayList != null)
                 Column(
