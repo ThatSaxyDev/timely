@@ -22,12 +22,12 @@ final timeTableControllerProvider =
 
 class TimeTableController extends StateNotifier<bool> {
   final TimeTableRepository _timeTableRepository;
-  final Ref _ref;
+  // final Ref _ref;
   TimeTableController({
     required TimeTableRepository timeTableRepository,
     required Ref ref,
   })  : _timeTableRepository = timeTableRepository,
-        _ref = ref,
+        // _ref = ref,
         super(false);
 
   //! create new schedule

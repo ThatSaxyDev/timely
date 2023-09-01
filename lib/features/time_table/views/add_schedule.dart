@@ -1,10 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:timely/features/time_table/controllers/time_table_controller.dart';
-import 'package:timely/features/utils/app_fade_animation.dart';
 import 'package:timely/features/utils/convert_time.dart';
 import 'package:timely/features/utils/nav.dart';
 import 'package:timely/features/utils/utils.dart';
@@ -198,7 +198,6 @@ class _AddScheduleViewState extends ConsumerState<AddScheduleView> {
                                           ? currentTheme
                                               .textTheme.bodyMedium!.color
                                           : currentTheme.backgroundColor,
-                                      borderRadius: BorderRadius.circular(15.r),
                                       border: daySelectionIsOpen.value == true
                                           ? null
                                           : Border.all(width: 0.5.w),
@@ -238,9 +237,13 @@ class _AddScheduleViewState extends ConsumerState<AddScheduleView> {
                                           .textTheme.bodyMedium!.color!,
                                       offset: const Offset(5, 5)),
                                 ],
-                                borderRadius: BorderRadius.circular(5.r),
                               ),
                               child: CupertinoPicker(
+                                selectionOverlay: Container(
+                                  color: currentTheme
+                                      .textTheme.bodyMedium!.color!
+                                      .withOpacity(0.1),
+                                ),
                                 scrollController: FixedExtentScrollController(
                                   initialItem: _selectedDayIndex,
                                 ),
@@ -298,7 +301,6 @@ class _AddScheduleViewState extends ConsumerState<AddScheduleView> {
                             ),
                             decoration: BoxDecoration(
                               color: currentTheme.backgroundColor,
-                              borderRadius: BorderRadius.circular(15.r),
                               border: Border.all(width: 0.5.w),
                             ),
                             child: Text(
@@ -329,7 +331,6 @@ class _AddScheduleViewState extends ConsumerState<AddScheduleView> {
                             ),
                             decoration: BoxDecoration(
                               color: currentTheme.backgroundColor,
-                              borderRadius: BorderRadius.circular(15.r),
                               border: Border.all(width: 0.5.w),
                             ),
                             child: Text(
@@ -373,51 +374,46 @@ class _AddScheduleViewState extends ConsumerState<AddScheduleView> {
             //! title input
             Align(
               alignment: Alignment.topCenter,
-              child: AppFadeAnimation(
-                delay: 1,
-                child: Column(
-                  children: [
-                    10.sbH,
-                    Opacity(
-                      opacity: 0.85,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.95,
-                        height: 60.h,
-                        padding: 15.padH,
-                        decoration: BoxDecoration(
-                            color: currentTheme.drawerTheme.backgroundColor,
-                            border: Border.all(
+              child: Column(
+                children: [
+                  10.sbH,
+                  Opacity(
+                    opacity: 0.85,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      height: 60.h,
+                      padding: 15.padH,
+                      decoration: BoxDecoration(
+                        color: currentTheme.drawerTheme.backgroundColor,
+                        border: Border.all(
+                          color: currentTheme.textTheme.bodyMedium!.color!,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
                               color: currentTheme.textTheme.bodyMedium!.color!,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                  color:
-                                      currentTheme.textTheme.bodyMedium!.color!,
-                                  offset: const Offset(5, 5)),
-                            ],
-                            borderRadius: BorderRadius.circular(5.r)),
-                        child: TextField(
-                          style: TextStyle(
+                              offset: const Offset(5, 5)),
+                        ],
+                      ),
+                      child: TextField(
+                        style: TextStyle(
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        cursorColor: currentTheme.textTheme.bodyMedium!.color!,
+                        controller: _titleController,
+                        decoration: InputDecoration(
+                          // contentPadding: 20.padH,
+                          hintText: 'Title',
+                          hintStyle: TextStyle(
                             fontSize: 26.sp,
                             fontWeight: FontWeight.w600,
                           ),
-                          cursorColor:
-                              currentTheme.textTheme.bodyMedium!.color!,
-                          controller: _titleController,
-                          decoration: InputDecoration(
-                            // contentPadding: 20.padH,
-                            hintText: 'Title',
-                            hintStyle: TextStyle(
-                              fontSize: 26.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            border: InputBorder.none,
-                          ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

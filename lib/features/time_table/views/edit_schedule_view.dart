@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'package:timely/features/time_table/controllers/time_table_controller.dart';
-import 'package:timely/features/utils/app_fade_animation.dart';
 import 'package:timely/features/utils/convert_time.dart';
 import 'package:timely/features/utils/nav.dart';
 import 'package:timely/features/utils/utils.dart';
@@ -137,7 +136,7 @@ class _EditScheduleViewState extends ConsumerState<EditScheduleView> {
             radius: 30.w,
             backgroundColor: currentTheme.textTheme.bodyMedium!.color,
             child: Icon(
-              PhosphorIcons.trashBold,
+              PhosphorIcons.bold.trash,
               color: Pallete.red,
             ),
           ),
@@ -230,7 +229,7 @@ class _EditScheduleViewState extends ConsumerState<EditScheduleView> {
                                       color: daySelectionIsOpen.value == true
                                           ? currentTheme
                                               .textTheme.bodyMedium!.color
-                                          : currentTheme.backgroundColor,
+                                          : currentTheme.colorScheme.background,
                                       borderRadius: BorderRadius.circular(15.r),
                                       border: daySelectionIsOpen.value == true
                                           ? null
@@ -240,7 +239,8 @@ class _EditScheduleViewState extends ConsumerState<EditScheduleView> {
                                       days[_selectedDayIndex],
                                       style: TextStyle(
                                         color: daySelectionIsOpen.value == true
-                                            ? currentTheme.backgroundColor
+                                            ? currentTheme
+                                                .colorScheme.background
                                             : currentTheme
                                                 .textTheme.bodyMedium!.color,
                                         fontSize: 18.sp,
@@ -330,7 +330,7 @@ class _EditScheduleViewState extends ConsumerState<EditScheduleView> {
                               vertical: 10.h,
                             ),
                             decoration: BoxDecoration(
-                              color: currentTheme.backgroundColor,
+                              color: currentTheme.colorScheme.background,
                               borderRadius: BorderRadius.circular(15.r),
                               border: Border.all(width: 0.5.w),
                             ),
@@ -361,7 +361,7 @@ class _EditScheduleViewState extends ConsumerState<EditScheduleView> {
                               vertical: 10.h,
                             ),
                             decoration: BoxDecoration(
-                              color: currentTheme.backgroundColor,
+                              color: currentTheme.colorScheme.background,
                               borderRadius: BorderRadius.circular(15.r),
                               border: Border.all(width: 0.5.w),
                             ),
@@ -406,51 +406,47 @@ class _EditScheduleViewState extends ConsumerState<EditScheduleView> {
             //! title input
             Align(
               alignment: Alignment.topCenter,
-              child: AppFadeAnimation(
-                delay: 1,
-                child: Column(
-                  children: [
-                    10.sbH,
-                    Opacity(
-                      opacity: 0.85,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.95,
-                        height: 60.h,
-                        padding: 15.padH,
-                        decoration: BoxDecoration(
-                            color: currentTheme.drawerTheme.backgroundColor,
-                            border: Border.all(
-                              color: currentTheme.textTheme.bodyMedium!.color!,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                  color:
-                                      currentTheme.textTheme.bodyMedium!.color!,
-                                  offset: const Offset(5, 5)),
-                            ],
-                            borderRadius: BorderRadius.circular(5.r)),
-                        child: TextField(
-                          style: TextStyle(
+              child: Column(
+                children: [
+                  10.sbH,
+                  Opacity(
+                    opacity: 0.85,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      height: 60.h,
+                      padding: 15.padH,
+                      decoration: BoxDecoration(
+                          color: currentTheme.drawerTheme.backgroundColor,
+                          border: Border.all(
+                            color: currentTheme.textTheme.bodyMedium!.color!,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color:
+                                    currentTheme.textTheme.bodyMedium!.color!,
+                                offset: const Offset(5, 5)),
+                          ],
+                          borderRadius: BorderRadius.circular(5.r)),
+                      child: TextField(
+                        style: TextStyle(
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        cursorColor: currentTheme.textTheme.bodyMedium!.color!,
+                        controller: _titleController,
+                        decoration: InputDecoration(
+                          // contentPadding: 20.padH,
+                          hintText: 'Title',
+                          hintStyle: TextStyle(
                             fontSize: 26.sp,
                             fontWeight: FontWeight.w600,
                           ),
-                          cursorColor:
-                              currentTheme.textTheme.bodyMedium!.color!,
-                          controller: _titleController,
-                          decoration: InputDecoration(
-                            // contentPadding: 20.padH,
-                            hintText: 'Title',
-                            hintStyle: TextStyle(
-                              fontSize: 26.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            border: InputBorder.none,
-                          ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

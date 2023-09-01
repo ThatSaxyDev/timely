@@ -56,7 +56,7 @@ class TextInputWidget extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: onTap,
-      child: Container(
+      child: SizedBox(
         // color: Colors.red,
         height: 66.h,
         width: width ?? double.infinity,

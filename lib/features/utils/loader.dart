@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 
 import '../../theme/palette.dart';
@@ -25,7 +23,6 @@ class Loader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currenTheme = ref.watch(themeNotifierProvider);
     return const Center(
       child: SizedBox(
         height: 40,

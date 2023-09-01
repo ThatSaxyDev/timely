@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
-import 'dart:math';
+// ignore_for_file: public_member_api_docs, sort_constructors_first, deprecated_member_use
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +10,14 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:timely/features/time_table/controllers/time_table_controller.dart';
 import 'package:timely/features/time_table/views/add_schedule.dart';
 import 'package:timely/features/time_table/widgets/time_table_tile.dart';
-import 'package:timely/features/utils/app_fade_animation.dart';
 import 'package:timely/features/utils/error_text.dart';
 import 'package:timely/features/utils/loader.dart';
 import 'package:timely/features/utils/nav.dart';
-import 'package:timely/features/utils/string_extensions.dart';
 import 'package:timely/features/utils/utils.dart';
 import 'package:timely/features/utils/widget_extensions.dart';
 import 'package:timely/models/schedule_model.dart';
 import 'package:timely/theme/palette.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TimeTableView extends ConsumerStatefulWidget {
   const TimeTableView({super.key});
@@ -31,7 +28,7 @@ class TimeTableView extends ConsumerStatefulWidget {
 
 class _TimeTableViewState extends ConsumerState<TimeTableView> {
   final ValueNotifier<int> tileTapped = ValueNotifier(-1);
-  final CarouselController _controller = CarouselController();
+  // final CarouselController _controller = CarouselController();
 
   void toggleTheme(WidgetRef ref) {
     ref.read(themeNotifierProvider.notifier).toggleTheme();
@@ -39,6 +36,16 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
 
   void clearTheDatabase({required WidgetRef ref}) {
     ref.read(timeTableControllerProvider.notifier).clearTheDatabase();
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw "Can not launch url";
+    }
   }
 
   @override
@@ -51,16 +58,16 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
           return IconButton(
             onPressed: () => displayDrawer(context),
             icon: Icon(
-              PhosphorIcons.list,
+              PhosphorIcons.regular.list,
               size: 30.sp,
             ),
           );
         }),
         actions: [
           IconButton(
-            onPressed: () => navigateToViews(context, AddScheduleView()),
+            onPressed: () => navigateToViews(context, const AddScheduleView()),
             icon: Icon(
-              PhosphorIcons.plusBold,
+              PhosphorIcons.bold.plus,
               size: 30.sp,
             ),
           ),
@@ -75,27 +82,70 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(PhosphorIcons.sun),
-                  10.sbW,
-                  Switch.adaptive(
-                    value: ref.watch(themeNotifierProvider.notifier).mode ==
-                        ThemeMode.dark,
-                    onChanged: (val) => toggleTheme(ref),
+                  const Text(
+                    'Light',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   10.sbW,
-                  Icon(PhosphorIcons.moon),
+                  InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () => toggleTheme(ref),
+                    child: Container(
+                      height: 20.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                          color: currentTheme.textTheme.bodyMedium!.color,
+                          border: Border.all(
+                            color: currentTheme.textTheme.bodyMedium!.color!,
+                          )),
+                      child: Stack(
+                        children: [
+                          AnimatedAlign(
+                            curve: Curves.easeInOut,
+                            alignment: ref
+                                        .watch(themeNotifierProvider.notifier)
+                                        .mode ==
+                                    ThemeMode.dark
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                            duration: 250.ms,
+                            child: Container(
+                              height: 20.h,
+                              width: 20.h,
+                              color: currentTheme.backgroundColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  10.sbW,
+                  const Text(
+                    'Dark',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
               200.sbH,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Pallete.redColor,
+                  backgroundColor: currentTheme.textTheme.bodyMedium!.color,
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 1,
+                    ),
+                  ),
                 ),
                 onPressed: () => clearTheDatabase(ref: ref),
                 child: Text(
                   'clear db',
                   style: TextStyle(
-                    color: Pallete.whiteColor,
+                    color: currentTheme.backgroundColor,
                   ),
                 ),
               ),
@@ -111,35 +161,123 @@ class _TimeTableViewState extends ConsumerState<TimeTableView> {
               height: height(context),
               width: width(context),
               child: Center(
-                child: Column(
-                  children: [
-                    50.sbH,
-                    Align(
-                      alignment: Alignment(0.8, 0),
-                      child: Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.rotationZ(-0.5),
-                        child: Image.asset(
-                          'arrow'.png,
-                          height: 150.h,
-                          color: currentTheme.textTheme.bodyMedium!.color,
+                child: Padding(
+                  padding: 24.padH,
+                  child: Column(
+                    children: [
+                      50.sbH,
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(16.h),
+                        decoration: BoxDecoration(
+                          color: currentTheme.drawerTheme.backgroundColor,
+                          border: Border.all(
+                            color: currentTheme.textTheme.bodyMedium!.color!,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color:
+                                    currentTheme.textTheme.bodyMedium!.color!,
+                                offset: const Offset(5, 5)),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Welcome To Timely',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 20.sp,
+                                  color:
+                                      currentTheme.textTheme.bodyMedium!.color,
+                                ),
+                              ),
+                            ),
+                            30.sbH,
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '[Tap the [+] icon later]',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18.sp,
+                                  color:
+                                      currentTheme.textTheme.bodyMedium!.color,
+                                ),
+                              ),
+                            ),
+                            30.sbH,
+                            Align(
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  _launchURL('https://x.com/thatsaxydev?s=21');
+                                },
+                                child: Text(
+                                  'Twitter: @thatsaxydev',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp,
+                                    color: currentTheme
+                                        .textTheme.bodyMedium!.color,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            10.sbH,
+                            Align(
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  _launchURL(
+                                      'https://github.com/ThatSaxyDev/timely');
+                                },
+                                child: Text(
+                                  'Github: github.com/ThatSaxyDev',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp,
+                                    color: currentTheme
+                                        .textTheme.bodyMedium!.color,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            10.sbH,
+                            Align(
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  _launchURL(
+                                      'https://drive.google.com/file/d/1iR1uKwI78K0A8zpGD3PxQ6A6Iew0zK85/view?usp=drivesdk');
+                                },
+                                child: Text(
+                                  'Resume: Google Drive',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp,
+                                    color: currentTheme
+                                        .textTheme.bodyMedium!.color,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ).animate().scale(duration: 300.ms, begin: 0, end: 1),
-                    50.sbH,
-                    Icon(
-                      PhosphorIcons.backpackLight,
-                      size: 150.sp,
-                    ),
-                    30.sbH,
-                    Text(
-                      'Welcome to Timely',
-                      style: TextStyle(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );
@@ -241,12 +379,7 @@ class TimeTablePage extends StatelessWidget {
                   child: Center(
                     child: Column(
                       children: [
-                        100.sbH,
-                        Icon(
-                          PhosphorIcons.cactus,
-                          size: 100.sp,
-                        ),
-                        10.sbH,
+                       160.sbH,
                         Text(
                           'No activities today',
                           style: TextStyle(
@@ -275,42 +408,38 @@ class TimeTablePage extends StatelessWidget {
         //! day
         Align(
           alignment: Alignment.topCenter,
-          child: AppFadeAnimation(
-            delay: 1,
-            child: Column(
-              children: [
-                10.sbH,
-                Opacity(
-                  opacity: 0.85,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    height: 60.h,
-                    padding: 15.padH,
-                    decoration: BoxDecoration(
-                      color: currentTheme.drawerTheme.backgroundColor,
-                      border: Border.all(
-                        color: currentTheme.textTheme.bodyMedium!.color!,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                            color: currentTheme.textTheme.bodyMedium!.color!,
-                            offset: const Offset(5, 5)),
-                      ],
-                      borderRadius: BorderRadius.circular(5.r),
+          child: Column(
+            children: [
+              10.sbH,
+              Opacity(
+                opacity: 0.85,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 60.h,
+                  padding: 15.padH,
+                  decoration: BoxDecoration(
+                    color: currentTheme.drawerTheme.backgroundColor,
+                    border: Border.all(
+                      color: currentTheme.textTheme.bodyMedium!.color!,
                     ),
-                    child: Center(
-                      child: Text(
-                        day,
-                        style: TextStyle(
-                          fontSize: 25.sp,
-                          fontWeight: FontWeight.w900,
-                        ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: currentTheme.textTheme.bodyMedium!.color!,
+                          offset: const Offset(5, 5)),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      day,
+                      style: TextStyle(
+                        fontSize: 25.sp,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

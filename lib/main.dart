@@ -27,7 +27,7 @@ class MyApp extends ConsumerWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ref.watch(themeNotifierProvider),
-          home: TimeTableView(),
+          home: const TimeTableView(),
         );
       },
     );

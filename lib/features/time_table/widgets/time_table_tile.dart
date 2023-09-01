@@ -1,21 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:timely/features/time_table/views/edit_schedule_view.dart';
 import 'package:timely/features/utils/nav.dart';
-import 'package:timely/features/utils/utils.dart';
 import 'package:timely/features/utils/widget_extensions.dart';
 
 import 'package:timely/models/schedule_model.dart';
 import 'package:timely/theme/palette.dart';
-
-import '../views/add_schedule.dart';
 
 class TimeTableTile extends ConsumerStatefulWidget {
   final ScheduleModel schedule;
@@ -38,27 +33,26 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
   final CarouselController _controller = CarouselController();
   int page = 0;
 
-  void _showPopupMenu(BuildContext context) async {
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
-    final result = await showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromPoints(Offset.zero, overlay.size.bottomRight(Offset.zero)),
-        Offset.zero & overlay.size,
-      ),
-      items: [
-        PopupMenuItem(
-          child: Text('Delete'),
-        ),
-      ],
-    );
+  // void _showPopupMenu(BuildContext context) async {
+  //   final RenderBox overlay =
+  //       Overlay.of(context).context.findRenderObject() as RenderBox;
+  //   final result = await showMenu(
+  //     context: context,
+  //     position: RelativeRect.fromRect(
+  //       Rect.fromPoints(Offset.zero, overlay.size.bottomRight(Offset.zero)),
+  //       Offset.zero & overlay.size,
+  //     ),
+  //     items: [
+  //       const PopupMenuItem(
+  //         child: Text('Delete'),
+  //       ),
+  //     ],
+  //   );
 
-    if (result != null) {
-      // Do something with the selected option
-    }
-  }
-  
+  //   if (result != null) {
+  //     // Do something with the selected option
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +73,7 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
               height: 90.h,
               width: width(context),
               // margin: EdgeInsets.only(bottom: 10.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 // color: getRandomColor(),
                 color: Colors.transparent,
                 // border: Border.all(
@@ -91,7 +85,7 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
               height: 90.h,
               width: width(context),
               // margin: EdgeInsets.only(bottom: 10.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   // color: Colors.black.withOpacity(0.2),
                   // border: Border.all(
                   //   color: currentTheme.backgroundColor,
@@ -193,23 +187,21 @@ class _TimeTableTileState extends ConsumerState<TimeTableTile> {
                           //! edit
                           Container(
                             decoration: BoxDecoration(
-                                color: currentTheme.textTheme.bodyMedium!.color!.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(7.r)),
-                            child: TextButton.icon(
+                              color: currentTheme.textTheme.bodyMedium!.color!
+                                  .withOpacity(0.2),
+                            ),
+                            child: TextButton(
                               onPressed: () {
                                 navigateToViews(
                                     context,
                                     EditScheduleView(
                                         schedule: widget.schedule));
                               },
-                              icon: Icon(
-                                PhosphorIcons.pencil,
-                                color: currentTheme.textTheme.bodyMedium!.color,
-                              ),
-                              label: Text(
+                              child: Text(
                                 'Edit',
                                 style: TextStyle(
-                                  color: currentTheme.textTheme.bodyMedium!.color,
+                                  color:
+                                      currentTheme.textTheme.bodyMedium!.color,
                                 ),
                               ),
                             ),
